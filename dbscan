@@ -1,0 +1,28 @@
+
+# potrebné balíčky:
+#install.packages("fpc")
+#install.packages("ggplot2")
+library(fpc)
+library(ggplot2)
+
+set.seed(123) # Pre reprodukovateľnosť
+
+n <- 150
+x <- c(rnorm(n/3, mean = 0, sd = 0.3), rnorm(n/3, mean = 1, sd = 0.3), rnorm(n/3, mean = 2, sd = 0.3))
+y <- c(rnorm(n/3, mean = 0, sd = 0.3), rnorm(n/3, mean = 1, sd = 0.3), rnorm(n/3, mean = 2, sd = 0.3))
+data <- data.frame(x = x, y = y)
+
+# Aplikácia DBSCANU na dataset
+dbscan_result <- dbscan(data, eps = 0.4, MinPts = 5)
+
+
+#vizualizácia pomocou ggplot2
+ggplot(data, aes(x = x, y = y, color = as.factor(dbscan_result$cluster))) + 
+  geom_point() +
+  scale_color_manual(values = c("black", "red", "blue", "green", "yellow")) + 
+  labs(color = "Cluster") +
+  theme_minimal() +
+  ggtitle("DBSCAN Clustering Results")
+
+
+
